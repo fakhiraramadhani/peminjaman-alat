@@ -7,9 +7,17 @@ use App\Http\Controllers\AlatController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 
 Route::resource('user', UserController::class)->except(['show']);
 
+    Route::middleware('guest')->group(function () {
+    Route::get('/', [LoginController::class, 'showLogin'])->name('login');
+    // Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+    Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])->name('logout');
+
+});
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
 Route::get('/kategori/tambah', [KategoriController::class, 'create'])->name('kategori.create');
 Route::post('/kategori/simpan', [KategoriController::class, 'store'])->name('kategori.store');
@@ -19,7 +27,7 @@ Route::get('/kategori/hapus/{id}', [KategoriController::class, 'destroy'])->name
 
 
 
-Route::get('/', [DashboardController::class, 'index'])->name('/dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
 Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
