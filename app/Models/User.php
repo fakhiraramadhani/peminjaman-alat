@@ -25,13 +25,29 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function peminjaman()
+    // Menggunakan username untuk identitas login
+    public function getAuthIdentifierName()
     {
-        return $this->hasMany(Peminjaman::class, 'id_peminjam', 'id_user');
+        return 'username';
     }
 
+    // Relasi dengan tabel peminjaman
+    public function peminjaman()
+    {
+        return $this->hasMany(
+            Peminjaman::class,
+            'id_peminjam',
+            'id_user'
+        );
+    }
+
+    // Relasi dengan tabel log aktivitas
     public function logAktivitas()
     {
-        return $this->hasMany(LogAktivitas::class, 'id_user', 'id_user');
+        return $this->hasMany(
+            LogAktivitas::class,
+            'id_user',
+            'id_user'
+        );
     }
 }
